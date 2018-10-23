@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Runtime.InteropServices.WindowsRuntime;
 using CodeShopWarehouse.Entities;
 
 namespace CodeShopWarehouse.Data
@@ -8,44 +9,38 @@ namespace CodeShopWarehouse.Data
     public class ProductRepository
     {
 
-        private readonly IDbConnection _db;
+        private readonly CodeShopWarehouseDbContext _db;
 
-        public ProductRepository(IDbConnection db)
+        public ProductRepository(CodeShopWarehouseDbContext db)
         {
             _db = db;
         }
 
         public Product GetProductById(int id)
         {
-            return new Product()
-            {
-                Id = id,
-            };
+            return _db.Product.Find(id);
         }
 
         public void CreateProduct(Product product)
         {
-            Console.WriteLine($"Product {product.Title} created!");
+            _db.Product.Add(product);
         }
 
         public void DeleteProduct(Product product)
         {
-            Console.WriteLine($"Product {product.Title} deleted!");
+            _db.Product.Remove(product);
         }
 
         public void UpdateProduct(Product product)
         {
-            Console.WriteLine($"Product {product.Title} updated!");
+            _db.Product.Update(product);
         }
 
         public List<Product> GetAllProducts()
         {
-            return new List<Product>
-            {
-                GetProductById(1),
-                GetProductById(2),
-                GetProductById(3),
-            };
+            List<Product> products = new List<Product>();
+            products.AddRange(_db.Product);
+            return products;
         }
 
 

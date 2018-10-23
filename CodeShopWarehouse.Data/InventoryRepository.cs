@@ -8,38 +8,33 @@ namespace CodeShopWarehouse.Data
 {
     public class InventoryRepository
     {
-        private readonly IDbConnection _db;
+        private readonly CodeShopWarehouseDbContext _db;
 
-        public InventoryRepository(IDbConnection db)
+        public InventoryRepository(CodeShopWarehouseDbContext db)
         {
             _db = db;
         }
 
         public Inventory GetInventoryById(int id)
         {
-            return new Inventory()
-            {
-                Id = id,
-            };
+            return _db.Inventory.Find(id);
         }
 
-        public void AddInventory(int id)
+        public void AddInventoryItem(Inventory item)
         {
-            Console.WriteLine($"Inventory added for ID {id}");
+            _db.Inventory.Add(item);
         }
 
-        public void RemoveInventory(int id)
+        public void UpdateInventory(Inventory item)
         {
-            Console.WriteLine($"Inventory removed for ID {id}");
+            _db.Inventory.Update(item);
         }
+
         public List<Inventory> GetInventory()
         {
-            return new List<Inventory>
-            {
-                GetInventoryById(1),
-                GetInventoryById(2),
-                GetInventoryById(3),
-            };
+            List<Inventory> inventory = new List<Inventory>();
+            inventory.AddRange(_db.Inventory);
+            return inventory;
         }
     }
 }

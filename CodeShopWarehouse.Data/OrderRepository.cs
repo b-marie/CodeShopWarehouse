@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Text;
 using CodeShopWarehouse.Entities;
 
@@ -9,59 +10,52 @@ namespace CodeShopWarehouse.Data
     public class OrderRepository
     {
 
-        private readonly IDbConnection _db;
+        private readonly CodeShopWarehouseDbContext _db;
 
-        public OrderRepository(IDbConnection db)
+        public OrderRepository(CodeShopWarehouseDbContext db)
         {
             _db = db;
         }
 
         public void CreateOrder(Order order)
         {
-            Console.WriteLine("order created");
+            _db.Order.Add(order);
         }
 
-        public void DeleteOrder(int orderId)
+        public void DeleteOrder(Order order)
         {
-            Console.WriteLine("order deleted");
+            _db.Order.Remove(order);
         }
 
         public Order GetOrderById(int id)
         {
-            return new Order()
-            {
-                Id = id,
-                CreatedAt = DateTimeOffset.Now.AddDays(-1),
-            };
+            return _db.Order.Find(id);
         }
 
         public List<Order> GetOpenOrders()
         {
-            return new List<Order>
-            {
-                GetOrderById(1),
-                GetOrderById(2),
-                GetOrderById(3),
-            };
+            List<Order> orders = new List<Order>();
+            orders.AddRange(_db.Order.Where(o => o.ProcessedAt == null));
+            return orders;
+        }
+
+        public List<Order> GetProcessedOrders()
+        {
+            List<Order> orders = new List<Order>();
+            orders.AddRange(_db.Order.Where(o => o.ClosedAt == null));
+            return orders;
         }
 
         public List<Order> GetClosedOrders()
         {
-            return new List<Order>
-            {
-                GetOrderById(1),
-                GetOrderById(2),
-                GetOrderById(3),
-            };
+            List<Order> orders = new List<Order>();
+            orders.AddRange(_db.Order.Where(o => o.ClosedAt != null));
+            return orders;
         }
-        public List<Order> GetOrdersInProcessing()
+
+        public void UpdateOrder(Order order)
         {
-            return new List<Order>
-            {
-                GetOrderById(1),
-                GetOrderById(2),
-                GetOrderById(3),
-            };
+            _db.Order.Update(order);
         }
     }
 }
