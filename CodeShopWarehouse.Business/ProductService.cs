@@ -9,6 +9,11 @@ namespace CodeShopWarehouse.Business
     {
         private readonly ProductRepository _productRepository;
 
+        public ProductService(ProductRepository productRepository)
+        {
+            _productRepository = productRepository;
+        }
+
         //Get a product
         public Product GetProductById(int id)
         {

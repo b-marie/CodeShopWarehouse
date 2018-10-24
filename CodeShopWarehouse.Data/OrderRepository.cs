@@ -42,7 +42,7 @@ namespace CodeShopWarehouse.Data
         public List<Order> GetProcessedOrders()
         {
             List<Order> orders = new List<Order>();
-            orders.AddRange(_db.Order.Where(o => o.ClosedAt == null));
+            orders.AddRange(_db.Order.Where(o => o.ProcessedAt != null && o.ClosedAt == null));
             return orders;
         }
 

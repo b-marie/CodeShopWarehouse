@@ -21,15 +21,15 @@ namespace CodeShopWarehouse.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetInventory()
+        public IActionResult Index()
         {
-            return Ok(_inventoryService.GetInventory());
+            return View(_inventoryService.GetInventory());
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetInventoryById(int id)
+        public IActionResult Details(int id)
         {
-            return Ok(_inventoryService.GetInventoryById(id));
+            return View(_inventoryService.GetInventoryById(id));
         }
 
 

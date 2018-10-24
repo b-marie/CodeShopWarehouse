@@ -6,7 +6,7 @@ using CodeShopWarehouse.Entities;
 
 namespace CodeShopWarehouse.Business
 {
-    class OrderService
+    public class OrderService
     {
         private readonly OrderRepository _orderRepository;
 
@@ -73,6 +73,7 @@ namespace CodeShopWarehouse.Business
             {
                 throw new Exception("Order already processed");
             }
+            //Remove or add inventory according to the order type
 
             currentOrder.ProcessedAt = processTime;
             _orderRepository.UpdateOrder(currentOrder);

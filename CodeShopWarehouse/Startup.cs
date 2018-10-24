@@ -34,6 +34,10 @@ namespace CodeShopWarehouse
             // Add application services.
             services.AddTransient<InventoryService>();
             services.AddTransient<ProductService>();
+            services.AddTransient<ProductRepository>();
+            services.AddTransient<InventoryRepository>();
+            services.AddTransient<OrderService>();
+            services.AddTransient<OrderRepository>();
 
             services.AddMvc();
         }
